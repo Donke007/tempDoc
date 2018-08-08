@@ -23,7 +23,7 @@
     </div>
 </body>
 <script>
-    define(['ali-oss'], function() {
+    define(['ali-oss'], function(require) {
         let OSS = require('ali-oss')
         let client = new OSS({
             region: '<oss-cn-hangzhou.aliyuncs.com>',
