@@ -1,5 +1,7 @@
 require.config({
+    baseUrl: "../bower_components",
     paths: {
-        "ali-oss": "bower_components/ali-oss/dist/aliyun-oss-sdk.min.js"
+        "require": "requirejs/require",
+        "ali-oss": "ali-oss/dist/aliyun-oss-sdk.min"
     }
 })

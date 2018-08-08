@@ -23,22 +23,23 @@
     </div>
 </body>
 <script>
-    require(['ali-oss'], function(require) {
-        let OSS = require('ali-oss')
+        
         let client = new OSS({
             region: '<oss-cn-hangzhou.aliyuncs.com>',
             accessKeyId: '<LTAIHCYqvwWiSICv>',
             accessKeySecret: '<eDWSYrwggpIahTAxNXPYJFa6XEOKw0>',
             bucket: 'donke-dl'
         })
-        async function multipartUpload() {
+        console.log(client);
+        
+        async function theUpload(files) {
             try {
-                let result = await client.multipartUpload('object-key', 'local-file', {
+                let result = await client.multipartUpload('image', files, {
                     progress: async function (p) {
                         console.log('Progress: ' + p);
                     },
                     meta: {
-                        year: 2017,
+                        year: 2018,
                         people: 'test'
                     },
                     mime: 'image/jpeg'
@@ -55,10 +56,11 @@
                 console.log(e);
             }
         }
-        $('upImg').on('click', function () {
-
+        $('#upImg').change('click', function (e) {
+            var theFile = $(this).context.files[0]
+            console.log($(this).context.files[0]);
+            theUpload(theFile)
         })
-    });
     
     // multipartUpload()
 </script>
