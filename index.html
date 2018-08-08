@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>上传图片</title>
     <script src="bower_components/ali-oss/dist/aliyun-oss-sdk.min.js"></script>
-    <script src="bower_components/requirejs/require.js"></script>
+    <script data-main="js/main.js" src="bower_components/requirejs/require.js"></script>
     <script src="./js/jquery.min.js"></script>
 </head>
 
@@ -23,7 +23,7 @@
     </div>
 </body>
 <script>
-    define(['ali-oss'], function(require) {
+    require(['ali-oss'], function(require) {
         let OSS = require('ali-oss')
         let client = new OSS({
             region: '<oss-cn-hangzhou.aliyuncs.com>',
