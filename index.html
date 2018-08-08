@@ -23,10 +23,7 @@
     </div>
 </body>
 <script>
-    define([
-        'require',
-        'dependency'
-    ], function(require, factory) {
+    define([], function() {
         let OSS = require('ali-oss')
         let client = new OSS({
             region: '<oss-cn-hangzhou.aliyuncs.com>',
