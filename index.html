@@ -23,45 +23,65 @@
     </div>
 </body>
 <script>
-        
-        let client = new OSS({
-            region: '<oss-cn-hangzhou.aliyuncs.com>',
-            accessKeyId: '<LTAIHCYqvwWiSICv>',
-            accessKeySecret: '<eDWSYrwggpIahTAxNXPYJFa6XEOKw0>',
-            bucket: 'donke-dl'
-        })
-        console.log(client);
-        
-        async function theUpload(files) {
-            try {
-                let result = await client.multipartUpload('image', files, {
-                    progress: async function (p) {
-                        console.log('Progress: ' + p);
-                    },
-                    meta: {
-                        year: 2018,
-                        people: 'test'
-                    },
-                    mime: 'image/jpeg'
-                });
-                console.log(result);
-                let head = await client.head('object-key');
-                console.log(head);
-            } catch (e) {
-                // 捕获超时异常
-                if (e.code === 'ConnectionTimeoutError') {
-                    console.log("Woops,超时啦!");
-                    // do ConnectionTimeoutError operation
-                }
-                console.log(e);
-            }
+    var fs = require(['./fs.min'])
+    let client = new OSS({
+        region: '<oss-cn-hangzhou.aliyuncs.com>',
+        accessKeyId: '<LTAIHCYqvwWiSICv>',
+        accessKeySecret: '<eDWSYrwggpIahTAxNXPYJFa6XEOKw0>',
+        bucket: 'donke-dl'
+    })
+    async function put(file) {
+        try {
+            let result = await client.put(file.name, file)
+            console.log(result)
+        } catch (e) {
+            console.log(e)
         }
-        $('#upImg').change('click', function (e) {
-            var theFile = $(this).context.files[0]
-            console.log($(this).context.files[0]);
-            theUpload(theFile)
-        })
-    
+    }
+    async function theUpload(name,files) {
+        try {
+            let result = await client.multipartUpload(name, files, {
+                progress: async function (p) {
+                    console.log('Progress: ' + p)
+                },
+                meta: {
+                    year: 2018,
+                    people: 'test'
+                },
+                mime: 'image/jpeg'
+            })
+            console.log(result)
+            let head = await client.head(name)
+            console.log(head)
+        } catch (e) {
+            // 捕获超时异常
+            if (e.code === 'ConnectionTimeoutError') {
+                console.log("Woops,超时啦!")
+                // do ConnectionTimeoutError operation
+            }
+            console.log(e)
+        }
+    }
+    $('#upImg').change('click', function (e) {
+        var theFile = $(this).context.files[0]
+        var file = new FileReader()
+        var path = $(this).val()
+        console.log($(this).context.files[0])
+        const fileLen = document.getElementById('upImg').files
+        const resultUpload = [];
+        
+        for (let i = 0; i < fileLen.length; i++) {
+            const file = fileLen[i];
+            const storeAs = file.name;
+            setTimeout(() => {
+                theUpload(storeAs, file)
+            }, 1000);
+            // client.multipartUpload(storeAs, file, {
+
+            // })
+        }
+    })
+
     // multipartUpload()
 </script>
 
