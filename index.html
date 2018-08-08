@@ -23,40 +23,46 @@
     </div>
 </body>
 <script>
-    let OSS = require('ali-oss')
-    let client = new OSS({
-        region: '<oss-cn-hangzhou.aliyuncs.com>',
-        accessKeyId: '<LTAIHCYqvwWiSICv>',
-        accessKeySecret: '<eDWSYrwggpIahTAxNXPYJFa6XEOKw0>',
-        bucket: 'donke-dl'
-    })
-    async function multipartUpload() {
-        try {
-            let result = await client.multipartUpload('object-key', 'local-file', {
-                progress: async function (p) {
-                    console.log('Progress: ' + p);
-                },
-                meta: {
-                    year: 2017,
-                    people: 'test'
-                },
-                mime: 'image/jpeg'
-            });
-            console.log(result);
-            let head = await client.head('object-key');
-            console.log(head);
-        } catch (e) {
-            // 捕获超时异常
-            if (e.code === 'ConnectionTimeoutError') {
-                console.log("Woops,超时啦!");
-                // do ConnectionTimeoutError operation
+    define([
+        'require',
+        'dependency'
+    ], function(require, factory) {
+        let OSS = require('ali-oss')
+        let client = new OSS({
+            region: '<oss-cn-hangzhou.aliyuncs.com>',
+            accessKeyId: '<LTAIHCYqvwWiSICv>',
+            accessKeySecret: '<eDWSYrwggpIahTAxNXPYJFa6XEOKw0>',
+            bucket: 'donke-dl'
+        })
+        async function multipartUpload() {
+            try {
+                let result = await client.multipartUpload('object-key', 'local-file', {
+                    progress: async function (p) {
+                        console.log('Progress: ' + p);
+                    },
+                    meta: {
+                        year: 2017,
+                        people: 'test'
+                    },
+                    mime: 'image/jpeg'
+                });
+                console.log(result);
+                let head = await client.head('object-key');
+                console.log(head);
+            } catch (e) {
+                // 捕获超时异常
+                if (e.code === 'ConnectionTimeoutError') {
+                    console.log("Woops,超时啦!");
+                    // do ConnectionTimeoutError operation
+                }
+                console.log(e);
             }
-            console.log(e);
         }
-    }
-    $('upImg').on('click',function () {
-        
-    })
+        $('upImg').on('click', function () {
+
+        })
+    });
+    
     // multipartUpload()
 </script>
 
