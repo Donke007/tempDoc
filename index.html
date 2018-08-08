@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>上传图片</title>
+    <script src="bower_components/ali-oss/dist/aliyun-oss-sdk.min.js"></script>
+    <script src="bower_components/requirejs/require.js"></script>
+    <script src="./js/jquery.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <input type="file" id="upImg" value="上传图片">
+        <br>
+        <br>
+        <button id="dlImg">下载图片</button>
+    </div>
+    <div class="img-list">
+
+    </div>
+</body>
+<script>
+    let OSS = require(['ali-oss'])
+    let client = new OSS({
+        region: 'oss-cn-hangzhou.aliyuncs.com',
+        accessKeyId: 'LTAIHCYqvwWiSICv',
+        accessKeySecret: 'eDWSYrwggpIahTAxNXPYJFa6XEOKw0',
+        bucket: 'donke-dl'
+    })
+    async function multipartUpload() {
+        try {
+            let result = await client.multipartUpload('object-key', 'local-file', {
+                progress: async function (p) {
+                    console.log('Progress: ' + p);
+                },
+                meta: {
+                    year: 2017,
+                    people: 'test'
+                },
+                mime: 'image/jpeg'
+            });
+            console.log(result);
+            let head = await client.head('object-key');
+            console.log(head);
+        } catch (e) {
+            // 捕获超时异常
+            if (e.code === 'ConnectionTimeoutError') {
+                console.log("Woops,超时啦!");
+                // do ConnectionTimeoutError operation
+            }
+            console.log(e);
+        }
+    }
+    $('upImg').on('click',function () {
+        
+    })
+    // multipartUpload()
+</script>
+
+</html>
